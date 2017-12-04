@@ -28,25 +28,40 @@ class Element(object):
 		print "Status: " + str(self._status)
 		print "Rules: "
 		print self._rules
-		print ""		
+		print ""
+
+	def printInfoInLine(self):
+		print 	"Name:   \"" 	+ self.getName() + "\"" + \
+				"	Status: " 	+ str(self.getStatus()) + \
+				"	Rules: " 	+ str(self.getRules())
 
 ###############################################################################
 
 def printAll():
 	print "RULES:"
-	for elt in enumerate(rules):
-		print(elt[1])
+	for elt in rules:
+		print(elt)
 	print ""
 
 	print "FACT:"
-	for elt in enumerate(facts):
-		print(elt[1])
+	for elt in facts:
+		print(elt)
 	print ""
 
 	print "QUERIES:"
-	for elt in enumerate(queries):
-		print(elt[1])
+	for elt in queries:
+		print(elt)
 	print ""
+
+def cleanLine(line):
+	line = line.strip()
+	end = line.find("#")
+	if (end == -1):
+		end = len(line)
+	line = line[0:end]
+	line = " ".join(line.split())
+	line = line.strip()
+	return (line)
 
 def readFile(path):
 	rules 	= []
@@ -55,11 +70,8 @@ def readFile(path):
 
 	with open(path) as f:
 		for line in f:
-			line = line.strip()
-			line = line[0:line.find("#")]
+			line = cleanLine(line)
 			if (len(line) > 0 and line[0] != "#"):
-				line = " ".join(line.split())
-				line = line.strip()
 				if (line[0] == "="):
 					facts.append(line);
 				elif (line[0] == "?"):
@@ -68,13 +80,17 @@ def readFile(path):
 					rules.append(line);
 	return(rules, facts, queries)
 
+def splitLogicOperator(string):
+	return (re.split('\+|\||\^', string))
+
 def initializeElement():
 	elem = {}
 
-	for elt in enumerate(rules):
-		s = str(elt[1])
+	for s in rules:
+		iff = False
 		if (s.find("<=>") != -1):
 			ret = s.split("<=>")
+			iff = True
 		elif (s.find("=>") != -1):
 			ret = s.split("=>")
 		else:
@@ -84,22 +100,23 @@ def initializeElement():
 		if (len(ret) != 2):
 			print "Error"
 			exit(1)
-
+		
 		rule = ret[0].strip()
 		implies = ret[1].strip()
 
-		tab = re.split('\+|\||\^', rule)
-		for n in enumerate(tab):
-			n = n[1].strip()
+		if (len(rule) <= 0 or len(implies) <= 0):
+			print "Error: " + s
+			exit(1)
+
+		for n in splitLogicOperator(rule):
+			n = n.strip()
 			if (n not in elem):
 				elem[n] = Element(n)
 
-		tab = re.split('\+|\||\^', implies)
-		for n in enumerate(tab):
-			n = n[1].strip()
+		for n in splitLogicOperator(implies):
+			n = n.strip()
 			if (n not in elem):
 				elem[n] = Element(n)
-			# print "-----INPL: " + rule
 			elem[n].addRule(rule)
 	return (elem)
 
@@ -109,10 +126,8 @@ def initializeElement():
 
 rules, facts, queries = readFile('data')
 elem = initializeElement()
-printAll()
-print elem
+# printAll()
+# print rules
 
-print elem["A"].printInfo()
-print elem["B"].printInfo()
-print elem["C"].printInfo()
-print elem["D"].printInfo()
+for i in elem:
+	print elem[i].printInfoInLine()

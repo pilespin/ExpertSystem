@@ -1,3 +1,4 @@
+#!sh syntaxcolor
 # this is a comment$
 # all the required rules and symbols, along with the bonus ones, will be
 # shown here. spacing is not important
@@ -19,18 +20,19 @@
 # A + B       <=> C       # A and B if and only if C
 # A + B       <=> !C      # A and B if and only if not C
 # A + B       <=> !C
-# A + B 		=> C
+A + B 		=> C
+A + B 		=> !C
 
 
 # C ^ H       => D        # C implies E
 # B + !H      => E        # C implies E
 # !idiot 	    => intelligent        # C implies E
-B           => C        # C implies E
-A           => B        # C implies E
-A           <=> B        # C implies E
-A           <=> B        # C implies E
-A + B + C   <=> D        # C implies E
-B | A       <=> D        # C implies E
+# B           => C        # C implies E
+# A           => B        # C implies E
+# A           <=> B        # C implies E
+# A           <=> B        # C implies E
+# A + B + C   <=> D        # C implies E
+# B | A       <=> D        # C implies E
 
 # HasHair									=> Mammal
 # HasClaws + SharpTeeth					=> Carnivore
