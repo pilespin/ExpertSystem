@@ -14,6 +14,7 @@ class Element(object):
 			self._rules.append(rule)
 			# print "ADDED RULE: " + rule + " IN " + self._name
 
+	########## GETTER ##########
 	def getName(self):
 		return (self._name)
 
@@ -22,6 +23,12 @@ class Element(object):
 
 	def getRules(self):
 		return (self._rules)
+	#############################
+
+	########## SETTER ##########
+	def setStatus(self, value=True):
+		self._status = value
+	#############################
 
 	def printInfo(self):
 		print "Name:   \"" + self._name + "\""
@@ -73,11 +80,13 @@ def readFile(path):
 			line = cleanLine(line)
 			if (len(line) > 0 and line[0] != "#"):
 				if (line[0] == "="):
-					facts.append(line);
+					facts.append(cleanLine(line[1:]));
 				elif (line[0] == "?"):
-					queries.append(line);
+					queries.append(cleanLine(line[1:]));
 				else:
 					rules.append(line);
+	facts = facts[0].split(" ")
+	queries = queries[0].split(" ")
 	return(rules, facts, queries)
 
 def splitLogicOperator(string):
@@ -126,8 +135,21 @@ def initializeElement():
 
 rules, facts, queries = readFile('data')
 elem = initializeElement()
-# printAll()
-# print rules
+
+if (len(queries) <= 0):
+	print "Missing Queries"
+	exit(1)
+
+printAll()
+
+print facts
+
+for i in facts:
+	elem[i].setStatus()
 
 for i in elem:
 	print elem[i].printInfoInLine()
+
+for i in elem:
+	if elem[i].getName()[0] != "!" and i in queries:
+		print elem[i].getName() + " = " + str(elem[i].getStatus())
