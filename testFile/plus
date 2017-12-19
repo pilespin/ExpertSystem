@@ -1,0 +1,12 @@
+
+C           => D
+A + B       => C
+C + A + D   => E
+E   		=> !F
+Z + X  		=> !Y
+
+=ABF		# Initial facts :
+
+
+?ABCDEFXYZ 	# Queries :
+# ?ZXY 	# Queries :

@@ -1,0 +1,15 @@
+
+B => A 
+D + E => B 
+G + H => F 
+I + J => G 
+G => H 
+L + M => K 
+#O + P => L + N 
+O + P => L
+O + P => N 
+N => M 
+
+?AFKP 
+
+=DEIJP #, AFP is true, K is false. 

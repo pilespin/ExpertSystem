@@ -80,9 +80,9 @@ class Expert(Compute):
 			# print "OPOSITE EXIST"
 			rules2 = self.getElement("!" + elem).getRules()
 			ret2 = self.computeAllSimpleNaturalRule(elem, rules1)
-			if ret1 == True and ret2 == True:
-				print "Conflict with element " + elem
-				exit(7)
+			# if ret1 == True and ret2 == True:
+			# 	print "Conflict with element " + elem
+			# 	exit(7)
 
 	def computeAllSimpleNaturalRule(self, elem, rules):
 		for i in rules:
@@ -195,11 +195,20 @@ class Expert(Compute):
 	def setInitialFact(self):
 		for i in self._facts:
 			self._elem[i].setStatus()
+			self._elem[i].setComputed(False)
+
+	def setInitialFactToFalse(self):
+		for i in self._facts:
+			self._elem[i].setStatus(False)
+			self._elem[i].setComputed(False)
 
 	def showQueries(self):
 		for i in self._elem:
 			if self._elem[i].getName()[0] != "!" and i in self._queries:
+				self.setInitialFact()
+				self.computeQueries(i)
 				print self._elem[i].getName() + " = " + str(self._elem[i].getStatus())
+				self.setInitialFactToFalse()
 
 	def printElement(self):
 		for i in self._elem:

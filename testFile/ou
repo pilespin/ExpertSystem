@@ -1,0 +1,7 @@
+
+A | B   => C
+F | D | C | E   => G
+
+=A		# Initial facts :
+
+?ABCDEFG 	# Queries :
