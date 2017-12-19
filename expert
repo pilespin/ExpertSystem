@@ -16,7 +16,24 @@ e.checkFactsExist()
 
 e.setInitialFact()
 
+# ret = e.compute(False, "+", True)
+# print ret
+
+# ret = e.computeSimpleNaturalRule("A+B")
+# print ret
+
 e.printAll()
 e.printElement()
 e.showQueries()
 
+print "--------------------"
+ret = e.computeQueries('C')
+# print ret
+print "--------------------"
+# print "--------------------"
+# ret = e.computeQueries('!C')
+# print ret
+# print "--------------------"
+# print qr + " = " + str(ret)
+
+e.printElement()

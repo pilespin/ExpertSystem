@@ -20,10 +20,15 @@
 # A + B       <=> C       # A and B if and only if C
 # A + B       <=> !C      # A and B if and only if not C
 # A + B       <=> !C
-A + B 		=> C
-A + C 		=> C
+# A | B 		=> C
+# A + C 		=> C
 A + D 		=> C
-# A + B 		=> !C
+# A + D 		=> !C
+A + B 		=> C
+A + B 		=> D
+# A + F 		=> !C
+# A + F 		=> C
+# A + !B 		=> E
 
 
 # C ^ H       => D        # C implies E
@@ -44,7 +49,7 @@ A + D 		=> C
 
 
 # =HasHair  HasClaws + SharpTeeth Spots + VeryFast		# Initial facts :  
-=A   	# Initial facts : A, B and G are true. All others are false.  
+=AB   	# Initial facts : A, B and G are true. All others are false.  
 
 		# If no facts are initially true, then a simple "=" followed
 		# by a newline is used

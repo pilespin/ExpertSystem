@@ -2,14 +2,17 @@
 
 import re
 from Element import *
+from Compute import *
 
-class Expert(object):
+class Expert(Compute):
 
 	def __init__(self):
 		self._rules		= []
 		self._facts		= []
 		self._queries	= []
 		self._elem		= {}
+
+		self.regexOperator = '\+|\||\^'
 
 	def readFile(self, path):
 		with open(path) as f:
@@ -42,6 +45,53 @@ class Expert(object):
 		else:
 			for i in line:
 				self._queries.append(i);
+
+	def computeSimpleNaturalRule(self, rule):
+		# print "Rule: " + rule
+		A, operator, B = self.parseSimpleRule(rule)
+		# print str(A) + " " + operator + " " + str(B)
+		ret = self.compute(A, operator, B)
+		return ret
+
+	def parseSimpleRule(self, rule):
+		ret = self.__splitLogicOperator(rule)
+		operator = re.findall(self.regexOperator, rule)
+		if (len(operator) <= 0):
+			print "Error when parsing: " + rule
+			exit(1)
+		operator = operator[0]
+		if (len(ret) != 2 and operator is not None):
+			print "Error when parsing: " + rule
+			exit(1)
+		A = self.getElement(ret[0])
+		B = self.getElement(ret[1])
+		if (self.getElement(A.getName()).getComputed() == False):
+			self.computeQueries(A.getName())
+		if (self.getElement(B.getName()).getComputed() == False):
+			self.computeQueries(B.getName())
+		return (A.getStatus(ret[0]), operator, B.getStatus(ret[1]))
+
+	def computeQueries(self, elem):
+		rules1 = self.getElement(elem).getRules()
+		ret1 = self.computeAllSimpleNaturalRule(elem, rules1)
+
+		rules2 = None
+		if ("!" + elem in self._elem):
+			# print "OPOSITE EXIST"
+			rules2 = self.getElement("!" + elem).getRules()
+			ret2 = self.computeAllSimpleNaturalRule(elem, rules1)
+			if ret1 == True and ret2 == True:
+				print "Conflict with element " + elem
+				exit(7)
+
+	def computeAllSimpleNaturalRule(self, elem, rules):
+		for i in rules:
+			ret = self.computeSimpleNaturalRule(i)
+			if ret == True: 
+				self.getElement(elem).setStatus()
+				self.getElement(elem).setComputed()
+				return True
+		return False
 
 	def initialize(self):
 		for s in self._rules:
@@ -133,12 +183,14 @@ class Expert(object):
 		return (line)
 
 	def __splitLogicOperator(self, string):
-		return (re.split('\+|\||\^', string))
+		return (re.split(self.regexOperator, string))
 
 	def getElement(self, index):
 		if index in self._elem:
 			return (self._elem[index])
-		
+		else:
+			print "Element Not found: " + index
+			exit(6)
 
 	def setInitialFact(self):
 		for i in self._facts:
@@ -151,7 +203,8 @@ class Expert(object):
 
 	def printElement(self):
 		for i in self._elem:
-			print self._elem[i].printInfoInLine()
+			self._elem[i].printInfoInLine()
+		print ""
 
 	def printAll(self):
 		print "RULES:"

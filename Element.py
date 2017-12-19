@@ -7,6 +7,7 @@ class Element(object):
 	def __init__(self, name="none"):
 		self._name = name
 		self._status = False
+		self._computed = False
 		self._rules = []
 
 	def addRule(self, rule):
@@ -16,10 +17,16 @@ class Element(object):
 			# print "ADDED RULE: " + rule + " IN " + self._name
 
 	########## GETTER ##########
+
+	def getComputed(self):
+		return (self._computed)
+
 	def getName(self):
 		return (self._name)
 
-	def getStatus(self):
+	def getStatus(self, string=''):
+		if len(string) > 0 and string[0] == "!":
+			return (not self._status)
 		return (self._status)
 
 	def getRules(self):
@@ -29,6 +36,9 @@ class Element(object):
 	########## SETTER ##########
 	def setStatus(self, value=True):
 		self._status = value
+
+	def setComputed(self, value=True):
+		self._computed = value
 	#############################
 
 	def printInfo(self):
