@@ -21,6 +21,7 @@
 # A + B       <=> !C      # A and B if and only if not C
 # A + B       <=> !C
 A + B 		=> C
+A + C 		=> C
 A + B 		=> !C
 
 
