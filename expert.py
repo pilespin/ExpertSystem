@@ -5,23 +5,13 @@ from Element import *
 
 class Expert(object):
 
-	def __init__(self, data):
+	def __init__(self):
 		self._rules		= []
 		self._facts		= []
 		self._queries	= []
 		self._elem		= {}
 
-		self.__readFile(data)
-		self.__initializeElement()
-		self.__checkConflict()
-		self.__checkQueriesExist()
-		self.__checkFactsExist()
-
-		if (len(self._queries) <= 0):
-			print "Missing Queries"
-			exit(1)
-
-	def __readFile(self, path):
+	def readFile(self, path):
 		with open(path) as f:
 			for line in f:
 				line = self.__cleanLine(line)
@@ -53,7 +43,7 @@ class Expert(object):
 			for i in line:
 				self._queries.append(i);
 
-	def __initializeElement(self):
+	def initialize(self):
 		for s in self._rules:
 			iff = False
 			if (s.find("<=>") != -1):
@@ -89,7 +79,7 @@ class Expert(object):
 					self._elem[n] = Element(n)
 				self._elem[n].addRule(rule)
 
-	def __checkQueriesExist(self):
+	def checkQueriesExist(self):
 		err = False
 		for q in self._queries:
 			if q not in self._elem:
@@ -98,7 +88,11 @@ class Expert(object):
 		if err == True:
 			exit(3)
 
-	def __checkFactsExist(self):
+		if (len(self._queries) <= 0):
+			print "Missing Queries"
+			exit(1)
+
+	def checkFactsExist(self):
 		err = False
 		for q in self._facts:
 			if q not in self._elem:
@@ -107,7 +101,7 @@ class Expert(object):
 		if err == True:
 			exit(3)
 
-	def __checkConflict(self):
+	def checkConflict(self):
 		conflit = False
 		for i in self._elem:
 			if self._elem[i].getName()[0] != "!":
@@ -146,7 +140,7 @@ class Expert(object):
 			return (self._elem[index])
 		
 
-	def initializeFact(self):
+	def setInitialFact(self):
 		for i in self._facts:
 			self._elem[i].setStatus()
 

@@ -6,8 +6,15 @@ from Expert import *
 ############ MAIN ############
 ##############################
 
-e = Expert('data')
-e.initializeFact()
+e = Expert()
+
+e.readFile('data')
+e.initialize()
+e.checkConflict()
+e.checkQueriesExist()
+e.checkFactsExist()
+
+e.setInitialFact()
 
 e.printAll()
 e.printElement()

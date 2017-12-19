@@ -23,7 +23,7 @@
 A + B 		=> C
 A + C 		=> C
 A + D 		=> C
-A + B 		=> !C
+# A + B 		=> !C
 
 
 # C ^ H       => D        # C implies E
