@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# import re
-
 class Element(object):
 
 	def __init__(self, name="none"):

@@ -1,0 +1,15 @@
+#!/usr/bin/python
+
+from Expert import *
+
+##############################
+############ MAIN ############
+##############################
+
+e = Expert('data')
+
+e.printAll()
+
+e.initializeFact()
+e.printElement()
+e.showQueries()

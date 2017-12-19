@@ -6,35 +6,35 @@ from Element import *
 class Expert(object):
 
 	def __init__(self, data):
-		self.rules 		= []
-		self.facts 		= []
-		self.queries 	= []
-		self.elem 		= {}
+		self._rules		= []
+		self._facts		= []
+		self._queries	= []
+		self._elem		= {}
 
-		self.readFile(data)
-		self.initializeElement()
+		self.__readFile(data)
+		self.__initializeElement()
 
-		if (len(self.queries) <= 0):
+		if (len(self._queries) <= 0):
 			print "Missing Queries"
 			exit(1)
 
-		self.facts = self.facts[0].split(" ")
-		self.queries = self.queries[0].split(" ")
+		self._facts = self._facts[0].split(" ")
+		self._queries = self._queries[0].split(" ")
 
-	def readFile(self, path):
+	def __readFile(self, path):
 		with open(path) as f:
 			for line in f:
-				line = self.cleanLine(line)
+				line = self.__cleanLine(line)
 				if (len(line) > 0 and line[0] != "#"):
 					if (line[0] == "="):
-						self.facts.append(self.cleanLine(line[1:]));
+						self._facts.append(self.__cleanLine(line[1:]));
 					elif (line[0] == "?"):
-						self.queries.append(self.cleanLine(line[1:]));
+						self._queries.append(self.__cleanLine(line[1:]));
 					else:
-						self.rules.append(line);
+						self._rules.append(line);
 
-	def initializeElement(self):
-		for s in self.rules:
+	def __initializeElement(self):
+		for s in self._rules:
 			iff = False
 			if (s.find("<=>") != -1):
 				ret = s.split("<=>")
@@ -56,18 +56,25 @@ class Expert(object):
 				print "Error: " + s
 				exit(1)
 
-			for n in self.splitLogicOperator(rule):
+			for n in self.__splitLogicOperator(rule):
 				n = n.strip()
-				if (n not in self.elem):
-					self.elem[n] = Element(n)
+				self.__checkLine(n)
+				if (n not in self._elem):
+					self._elem[n] = Element(n)
 
-			for n in self.splitLogicOperator(implies):
+			for n in self.__splitLogicOperator(implies):
 				n = n.strip()
-				if (n not in self.elem):
-					self.elem[n] = Element(n)
-				self.elem[n].addRule(rule)
+				self.__checkLine(n)
+				if (n not in self._elem):
+					self._elem[n] = Element(n)
+				self._elem[n].addRule(rule)
 
-	def cleanLine(self, line):
+	def __checkLine(self, line):
+		if len(line) <= 0:
+			print "Error"
+			exit(1)
+
+	def __cleanLine(self, line):
 		line = line.strip()
 		end = line.find("#")
 		if (end == -1):
@@ -77,21 +84,34 @@ class Expert(object):
 		line = line.strip()
 		return (line)
 
-	def splitLogicOperator(self, string):
+	def __splitLogicOperator(self, string):
 		return (re.split('\+|\||\^', string))
+
+	def initializeFact(self):
+		for i in self._facts:
+			self._elem[i].setStatus()
+
+	def showQueries(self):
+		for i in self._elem:
+			if self._elem[i] and self._elem[i].getName()[0] != "!" and i in self._queries:
+				print self._elem[i].getName() + " = " + str(self._elem[i].getStatus())
+
+	def printElement(self):
+		for i in self._elem:
+			print self._elem[i].printInfoInLine()
 
 	def printAll(self):
 		print "RULES:"
-		for elt in self.rules:
+		for elt in self._rules:
 			print(elt)
 		print ""
 
 		print "FACT:"
-		for elt in self.facts:
+		for elt in self._facts:
 			print(elt)
 		print ""
 
 		print "QUERIES:"
-		for elt in self.queries:
+		for elt in self._queries:
 			print(elt)
-		print ""	
+		print ""
