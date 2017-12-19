@@ -7,9 +7,9 @@ from Expert import *
 ##############################
 
 e = Expert('data')
+e.initializeFact()
 
 e.printAll()
-
-e.initializeFact()
 e.printElement()
 e.showQueries()
+

@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import re
+
 class Element(object):
 
 	def __init__(self, name="none"):
@@ -9,6 +11,7 @@ class Element(object):
 
 	def addRule(self, rule):
 		if (rule not in self._rules):
+			# rule = re.sub('\s+', '', rule)
 			self._rules.append(rule)
 			# print "ADDED RULE: " + rule + " IN " + self._name
 
