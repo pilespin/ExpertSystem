@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 from Expert import *
+import sys
+# print sys.argv
 
 ##############################
 ############ MAIN ############
@@ -8,7 +10,19 @@ from Expert import *
 
 e = Expert()
 
-e.readFile('data')
+if len(sys.argv) <= 1:
+	print "Missing file"
+	exit(1)
+
+file = sys.argv[1]
+
+try:
+	open(file, 'r')
+except IOError:
+	print "Can't read: " + file
+	exit(1)
+
+e.readFile(file)
 e.initialize()
 e.checkConflict()
 e.checkQueriesExist()
@@ -19,11 +33,11 @@ e.setInitialFact()
 # ret = e.compute(False, "+", True)
 # print ret
 
-# ret = e.computeSimpleNaturalRule("A+B")
+# ret = e.computeSimpleNaturalRule("D")
 # print ret
 
-# e.printAll()
-# e.printElement()
+e.printAll()
+e.printElement()
 e.showQueries()
 
 # print "--------------------"

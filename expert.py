@@ -46,53 +46,6 @@ class Expert(Compute):
 			for i in line:
 				self._queries.append(i);
 
-	def computeSimpleNaturalRule(self, rule):
-		# print "Rule: " + rule
-		A, operator, B = self.parseSimpleRule(rule)
-		# print str(A) + " " + operator + " " + str(B)
-		ret = self.compute(A, operator, B)
-		return ret
-
-	def parseSimpleRule(self, rule):
-		ret = self.__splitLogicOperator(rule)
-		operator = re.findall(self.regexOperator, rule)
-		if (len(operator) <= 0):
-			print "Error when parsing: " + rule
-			exit(1)
-		operator = operator[0]
-		if (len(ret) != 2 and operator is not None):
-			print "Error when parsing: " + rule
-			exit(1)
-		A = self.getElement(ret[0])
-		B = self.getElement(ret[1])
-		if (self.getElement(A.getName()).getComputed() == False):
-			self.computeQueries(A.getName())
-		if (self.getElement(B.getName()).getComputed() == False):
-			self.computeQueries(B.getName())
-		return (A.getStatus(ret[0]), operator, B.getStatus(ret[1]))
-
-	def computeQueries(self, elem):
-		rules1 = self.getElement(elem).getRules()
-		ret1 = self.computeAllSimpleNaturalRule(elem, rules1)
-
-		rules2 = None
-		if ("!" + elem in self._elem):
-			# print "OPOSITE EXIST"
-			rules2 = self.getElement("!" + elem).getRules()
-			ret2 = self.computeAllSimpleNaturalRule(elem, rules1)
-			# if ret1 == True and ret2 == True:
-			# 	print "Conflict with element " + elem
-			# 	exit(7)
-
-	def computeAllSimpleNaturalRule(self, elem, rules):
-		for i in rules:
-			ret = self.computeSimpleNaturalRule(i)
-			if ret == True: 
-				self.getElement(elem).setStatus()
-				self.getElement(elem).setComputed()
-				return True
-		return False
-
 	def initialize(self):
 		for s in self._rules:
 			iff = False
@@ -116,17 +69,15 @@ class Expert(Compute):
 				print "Error: " + s
 				exit(1)
 
-			for n in self.__splitLogicOperator(rule):
+			for n in self.splitLogicOperator(rule):
 				n = n.strip()
 				self.__checkLine(n, rule)
-				if (n not in self._elem):
-					self._elem[n] = Element(n)
+				self.__addElement(n)
 
-			for n in self.__splitLogicOperator(implies):
+			for n in self.splitLogicOperator(implies):
 				n = n.strip()
 				self.__checkLine(n, rule)
-				if (n not in self._elem):
-					self._elem[n] = Element(n)
+				self.__addElement(n)
 				self._elem[n].addRule(rule)
 
 	def checkQueriesExist(self):
@@ -145,6 +96,8 @@ class Expert(Compute):
 	def checkFactsExist(self):
 		err = False
 		for q in self._facts:
+			# print "CHECK FACT: " + q
+			# print self._elem
 			if q not in self._elem:
 				print "Fact not reconized: " + q
 				err = True
@@ -162,6 +115,18 @@ class Expert(Compute):
 							conflit = True
 		if conflit == True:
 			exit(2)
+	def __addElement(self, name):
+		if (name not in self._elem):
+			if self.__isNegative(name):
+				self._elem[name[1:]] = Element(name[1:])
+			# print "ADD " + name
+			self._elem[name] = Element(name)
+
+	def __isNegative(self, name):
+		if (len(name) >= 2):
+			if name[0] == "!":
+				return True
+		return False
 
 	def __checkLine(self, line, append):
 		if len(line) <= 0:
@@ -182,10 +147,13 @@ class Expert(Compute):
 		line = line.strip()
 		return (line)
 
-	def __splitLogicOperator(self, string):
+	def splitLogicOperator(self, string):
 		return (re.split(self.regexOperator, string))
 
 	def getElement(self, index):
+		if self.__isNegative(index):
+			index = index[1:]
+
 		if index in self._elem:
 			return (self._elem[index])
 		else:
@@ -206,7 +174,7 @@ class Expert(Compute):
 		for i in self._elem:
 			if self._elem[i].getName()[0] != "!" and i in self._queries:
 				self.setInitialFact()
-				self.computeQueries(i)
+				self.computeQueries(self._elem, i)
 				print self._elem[i].getName() + " = " + str(self._elem[i].getStatus())
 				self.setInitialFactToFalse()
 
