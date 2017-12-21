@@ -36,9 +36,11 @@ e.setInitialFact()
 # ret = e.computeSimpleNaturalRule("D")
 # print ret
 
-e.printAll()
-e.printElement()
+# e.printAll()
+# e.printElement()
 e.showQueries()
+# e.printElement()
+
 
 # print "--------------------"
 # ret = e.computeQueries('C')

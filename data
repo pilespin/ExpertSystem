@@ -1,8 +1,12 @@
 
-B + C => A 
-D ^ E => B 
-B => C 
+C           => D
+A + B       => C
+C + A + D   => E
+E   		=> !F
+Z + X  		=> !Y
 
-?A
+=ABF		# Initial facts :
 
-=E 	#, A should be true. 
+
+?ABCDEFXYZ 	# Queries :
+# ?ZXY 	# Queries :

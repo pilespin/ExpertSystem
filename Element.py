@@ -4,9 +4,9 @@ import re
 
 class Element(object):
 
-	def __init__(self, name="none"):
+	def __init__(self, name="none", status=False):
 		self._name = name
-		self._status = False
+		self._status = status
 		self._computed = False
 		self._rules = []
 

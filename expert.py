@@ -171,7 +171,7 @@ class Expert(Compute):
 			self._elem[i].setComputed(False)
 
 	def showQueries(self):
-		for i in self._elem:
+		for i in sorted(self._elem):
 			if self._elem[i].getName()[0] != "!" and i in self._queries:
 				self.setInitialFact()
 				self.computeQueries(self._elem, i)
@@ -179,7 +179,7 @@ class Expert(Compute):
 				self.setInitialFactToFalse()
 
 	def printElement(self):
-		for i in self._elem:
+		for i in sorted(self._elem):
 			self._elem[i].printInfoInLine()
 		print ""
 

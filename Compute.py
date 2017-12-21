@@ -3,7 +3,6 @@
 import re
 from Element import *
 
-
 class Compute(object):
 
 	def __init__(self):
@@ -42,12 +41,45 @@ class Compute(object):
 			if (self.getElement(A.getName()).getComputed() == False):
 				self.computeQueries(self._elem, A.getName())
 			ret = A.getStatus(ret[0])
+			# print str(A.getName())
+			# print ret
 			# ret = self.getElement(ret[0]).getStatus(ret[0])
 			# print ret
+		elif len(ret) >= 3:
+			ret = self.parseLongRule(rule)
+			# return False
 		else:
 			A, operator, B = self.parseSimpleRule(rule)
-			print str(A) + " " + operator + " " + str(B)
 			ret = self.compute(A, operator, B)
+		# print ret
+		return ret
+
+	def parseLongRule(self, rule):
+		elm = self.splitLogicOperator(rule)
+		opr = re.findall(self.regexOperator, rule)
+
+		if (len(elm) <= 1 and len(opr) <= 0 and len(opr) != len(elm) - 1):
+			print "Error when parsing: " + rule
+			exit(7)
+
+		ret = self.getElement(elm[0]).getStatus(elm[0])
+
+		for i in range(len(opr)):
+
+			cur = elm[i]
+			nxt = elm[i+1]
+
+			# A, operator, B = self.parseSimpleRule(cur + opr[i] + nxt)
+			# A = self.getElement(cur)
+			B = self.getElement(nxt).getStatus(nxt)
+			# print "COMPUTE: " + opr[i] + nxt
+			# print "COMPUTE: " + str(ret) + opr[i] + str(B)
+			ret = self.compute(ret, opr[i], B)
+		
+		# print elm
+		# print opr
+		# print ret
+
 		return ret
 
 	def parseSimpleRule(self, rule):
@@ -62,13 +94,15 @@ class Compute(object):
 			exit(1)
 		A = self.getElement(ret[0])
 		B = self.getElement(ret[1])
+		# print str(A.getName()) + " " + operator + " " + str(B.getName())
+		# print str(A.getStatus()) + " " + operator + " " + str(B.getStatus())
 		# print A.getName()
 		# print A.getStatus(ret[0])
 		# print B.getName()
 		# print B.getStatus(ret[1])
-		if (self.getElement(A.getName()).getComputed() == False):
+		if (A.getComputed() == False):
 			self.computeQueries(self._elem, A.getName())
-		if (self.getElement(B.getName()).getComputed() == False):
+		if (B.getComputed() == False):
 			self.computeQueries(self._elem, B.getName())
 			# print A.getStatus(ret[0])
 			# print B.getStatus(ret[1])
@@ -88,7 +122,7 @@ class Compute(object):
 		if operator == '^':
 			if A == True and B == False:
 				return (True)
-			if A == True and B == False:
+			if A == False and B == True:
 				return True
 			else:
 				return False
