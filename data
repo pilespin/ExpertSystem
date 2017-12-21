@@ -1,12 +1,12 @@
 
-C           => D
-A + B       => C
-C + A + D   => E
-E   		=> !F
-Z + X  		=> !Y
+A ^ B   			=> C 
+F ^ !C ^ D ^ I ^ E  => G
+F ^ D ^ C ^ E   	=> H
+F ^ C 	 			=> J
+F ^ C 	 			=> !L
+# A 		 			=> L
+F ^ !C 	 			=> K
 
-=ABF		# Initial facts :
+=A	E
 
-
-?ABCDEFXYZ 	# Queries :
-# ?ZXY 	# Queries :
+?ABCDEFGHIJKL

@@ -78,7 +78,7 @@ class Expert(Compute):
 				n = n.strip()
 				self.__checkLine(n, rule)
 				self.__addElement(n)
-				self._elem[n].addRule(rule)
+				self.getElement(n).addRule(rule)
 
 	def checkQueriesExist(self):
 		err = False
@@ -150,9 +150,13 @@ class Expert(Compute):
 	def splitLogicOperator(self, string):
 		return (re.split(self.regexOperator, string))
 
-	def getElement(self, index):
-		if self.__isNegative(index):
-			index = index[1:]
+	def getElement(self, index, negative=True):
+		# if self.__isNegative(index):
+		# 	index = index[1:]
+
+		if negative == False:
+			if len(index) >= 2:
+				index = index[1:]
 
 		if index in self._elem:
 			return (self._elem[index])
@@ -176,6 +180,7 @@ class Expert(Compute):
 				self.setInitialFact()
 				self.computeQueries(self._elem, i)
 				print self._elem[i].getName() + " = " + str(self._elem[i].getStatus())
+				# self.printElement()
 				self.setInitialFactToFalse()
 
 	def printElement(self):

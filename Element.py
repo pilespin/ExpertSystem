@@ -34,8 +34,12 @@ class Element(object):
 	#############################
 
 	########## SETTER ##########
-	def setStatus(self, value=True):
-		self._status = value
+	def setStatus(self, value=True, string=''):
+		if len(string) > 0 and string[0] == "!":
+			self._status = not value
+			# print "set status" + string + str(self._status)
+		else:
+			self._status = value
 
 	def setComputed(self, value=True):
 		self._computed = value

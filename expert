@@ -39,6 +39,8 @@ e.setInitialFact()
 # e.printAll()
 # e.printElement()
 e.showQueries()
+# print e.getElement("!C").getRules()
+
 # e.printElement()
 
 

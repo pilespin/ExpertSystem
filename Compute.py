@@ -16,29 +16,38 @@ class Compute(object):
 		if ("!" + elem in allElem):
 			# print "OPOSITE EXIST"
 			rules2 = self.getElement("!" + elem).getRules()
-			self.computeNaturalRule(elem, rules2)
+			self.computeNaturalRule("!" + elem, rules2)
+			# print self.getElement("!" + elem).getStatus()
+			if self.getElement("!" + elem).getStatus() == True:
+				self.getElement(elem).setStatus(False)
+
+			# print "COMPUTED"
+
 			# if ret1 == True and ret2 == True:
 			# 	print "Conflict with element " + elem
 			# 	exit(7)
 
 	def computeNaturalRule(self, elem, rules):
+		# print elem + " --- " + str(rules)
 		for i in rules:
 			ret = self.computeSimpleNaturalRule(i)
+			# print elem
 			# print ret
 			if ret == True:
 				self.getElement(elem).setStatus()
+				# self.getElement(elem).setStatus(string=elem)
 				self.getElement(elem).setComputed()
-				return True
-		return False
+				# return True
+		# return False
 
 	def computeSimpleNaturalRule(self, rule):
 		# print "Rule: " + rule
 		ret = self.splitLogicOperator(rule)
 		# print ret
 		if len(ret) == 1:
-			# print ret[0]	
+			# print ret[0]
 			A = self.getElement(ret[0])
-			if (self.getElement(A.getName()).getComputed() == False):
+			if (self.getElement(A.getName(), negative=False).getComputed() == False):
 				self.computeQueries(self._elem, A.getName())
 			ret = A.getStatus(ret[0])
 			# print str(A.getName())
@@ -62,7 +71,7 @@ class Compute(object):
 			print "Error when parsing: " + rule
 			exit(7)
 
-		ret = self.getElement(elm[0]).getStatus(elm[0])
+		ret = self.getElement(elm[0], negative=False).getStatus(elm[0])
 
 		for i in range(len(opr)):
 
@@ -71,7 +80,7 @@ class Compute(object):
 
 			# A, operator, B = self.parseSimpleRule(cur + opr[i] + nxt)
 			# A = self.getElement(cur)
-			B = self.getElement(nxt).getStatus(nxt)
+			B = self.getElement(nxt, negative=False).getStatus(nxt)
 			# print "COMPUTE: " + opr[i] + nxt
 			# print "COMPUTE: " + str(ret) + opr[i] + str(B)
 			ret = self.compute(ret, opr[i], B)
@@ -92,8 +101,8 @@ class Compute(object):
 		if (len(ret) != 2 and operator is not None):
 			print "Error when parsing: " + rule
 			exit(1)
-		A = self.getElement(ret[0])
-		B = self.getElement(ret[1])
+		A = self.getElement(ret[0], negative=False)
+		B = self.getElement(ret[1], negative=False)
 		# print str(A.getName()) + " " + operator + " " + str(B.getName())
 		# print str(A.getStatus()) + " " + operator + " " + str(B.getStatus())
 		# print A.getName()
