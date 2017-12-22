@@ -4,6 +4,9 @@ from Expert import *
 import sys
 # print sys.argv
 
+DEBUG = True;
+# DEBUG = False;
+
 ##############################
 ############ MAIN ############
 ##############################
@@ -36,8 +39,10 @@ e.setInitialFact()
 # ret = e.computeSimpleNaturalRule("D")
 # print ret
 
-# e.printAll()
-# e.printElement()
+if DEBUG == True:
+	e.printAll()
+	e.printElement()
+
 e.showQueries()
 # print e.getElement("!C").getRules()
 

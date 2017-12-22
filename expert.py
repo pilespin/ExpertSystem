@@ -1,10 +1,11 @@
 #!/usr/bin/python
 
 import re
-from Element import *
-from Compute import *
+from Element import Element
+from Compute import Compute
+from Common import Common
 
-class Expert(Compute):
+class Expert(Compute, Common):
 
 	def __init__(self):
 		self._rules		= []
@@ -12,7 +13,8 @@ class Expert(Compute):
 		self._queries	= []
 		self._elem		= {}
 
-		self.regexOperator = '\+|\||\^'
+	def getAllElement(self):
+		return (self._elem)
 
 	def readFile(self, path):
 		with open(path) as f:
@@ -70,14 +72,17 @@ class Expert(Compute):
 				exit(1)
 
 			for n in self.splitLogicOperator(rule):
+				n = self.removeParentese(n)
+				# n = re.sub("\)", "", n)
+				# n = re.sub("\(", "", n)
 				n = n.strip()
 				self.__checkLine(n, rule)
-				self.__addElement(n)
+				self.addElement(n)
 
 			for n in self.splitLogicOperator(implies):
 				n = n.strip()
 				self.__checkLine(n, rule)
-				self.__addElement(n)
+				self.addElement(n)
 				self.getElement(n).addRule(rule)
 
 	def checkQueriesExist(self):
@@ -115,13 +120,14 @@ class Expert(Compute):
 							conflit = True
 		if conflit == True:
 			exit(2)
-	def __addElement(self, name):
+
+	def addElement(self, name):
 		if (name not in self._elem):
 			self._elem[name] = Element(name)
 			if self.__isNegative(name):
 				if (name[1:] not in self._elem):
 					self._elem[name[1:]] = Element(name[1:])
-			# print "ADD " + name
+			print "ADD " + name
 
 	def __isNegative(self, name):
 		if (len(name) >= 2):
@@ -148,8 +154,8 @@ class Expert(Compute):
 		line = line.strip()
 		return (line)
 
-	def splitLogicOperator(self, string):
-		return (re.split(self.regexOperator, string))
+	# def splitLogicOperator(self, string):
+	# 	return (re.split(self.regexOperator, string))
 
 	def getElement(self, index, negative=True):
 		# if self.__isNegative(index):
@@ -186,7 +192,7 @@ class Expert(Compute):
 
 	def printElement(self):
 		for i in sorted(self._elem):
-			self._elem[i].printInfoInLine()
+			self._elem[i].printAllInfo()
 		print ""
 
 	def printAll(self):

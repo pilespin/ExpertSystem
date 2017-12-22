@@ -1,13 +1,7 @@
 
-A ^ B   			=> C 
+((A | B) + C) => D
 
-F ^ !C ^ D ^ I ^ E  => G
-F ^ D ^ C ^ E   	=> H
-F ^ C 	 			=> J
-F ^ C 	 			=> !L
-# A 		 			=> L
-F ^ !C 	 			=> K
 
-=A
+=AC
 
-?ABC
+?ABCD

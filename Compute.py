@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import re
-from Element import *
+from Element import Element
 
 class Compute(object):
 
@@ -9,10 +9,14 @@ class Compute(object):
 		pass
 
 	def computeQueries(self, allElem, elem):
+		print "------------ COMPUTE QUERIES: " + elem	
 		rules1 = self.getElement(elem).getRules()
-		self.computeNaturalRule(elem, rules1)
+		# print "------------ COMPUTE QUERIES: " + elem	
 
-		rules2 = None
+		self.computeNaturalRule(elem, rules1)
+		# print "------------ COMPUTE QUERIES: " + elem	
+
+		# rules2 = None
 		if ("!" + elem in allElem):
 			# print "OPOSITE EXIST"
 			rules2 = self.getElement("!" + elem).getRules()
@@ -30,7 +34,7 @@ class Compute(object):
 	def computeNaturalRule(self, elem, rules):
 		# print elem + " --- " + str(rules)
 		for i in rules:
-			ret = self.computeSimpleNaturalRule(i)
+			ret = self.computeSimpleNaturalRule(elem, i)
 			# print elem
 			# print ret
 			if ret == True:
@@ -40,14 +44,19 @@ class Compute(object):
 				# return True
 		# return False
 
-	def computeSimpleNaturalRule(self, rule):
+	def computeSimpleNaturalRule(self, elem, rule):
 		# print "Rule: " + rule
 		ret = self.splitLogicOperator(rule)
 		# print ret
+
 		if len(ret) == 1:
-			# print ret[0]
+			# print "------------ I WANT " + ret[0]
+			# if self.checkLine(ret[0]) != None:
+				# if ret[0][0] == '_':
+					# A = self.getElement(ret[0])
+			# else:
 			A = self.getElement(ret[0])
-			if (self.getElement(A.getName(), negative=False).getComputed() == False):
+			if (A.getComputed() == False):
 				self.computeQueries(self._elem, A.getName())
 			ret = A.getStatus(ret[0])
 			# print str(A.getName())
@@ -55,7 +64,7 @@ class Compute(object):
 			# ret = self.getElement(ret[0]).getStatus(ret[0])
 			# print ret
 		elif len(ret) >= 3:
-			ret = self.parseLongRule(rule)
+			ret = self.parseLongRule(rule) #NOT COMPUTE ELEMENT
 			# return False
 		else:
 			A, operator, B = self.parseSimpleRule(rule)
@@ -70,6 +79,8 @@ class Compute(object):
 		if (len(elm) <= 1 and len(opr) <= 0 and len(opr) != len(elm) - 1):
 			print "Error when parsing: " + rule
 			exit(7)
+
+		print " ------------ I WANT " + elm[0]
 
 		ret = self.getElement(elm[0], negative=False).getStatus(elm[0])
 
