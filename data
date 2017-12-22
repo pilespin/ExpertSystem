@@ -1,11 +1,9 @@
 
-A => B
-B => C
-C => D
-D => E
-E => F
-F => G
-G => H
+HasHair									=> Mammal
+HasClaws + SharpTeeth					=> Carnivore
+EatMeat									=> Carnivore
+Mammal + Carnivore + Spots + VeryFast	=> Cheetah
 
-=A  ##################
-?ABCDEFGH ##################
+=HasHair,HasClaws,SharpTeeth,Spots,VeryFast
+
+?Cheetah,Mammal

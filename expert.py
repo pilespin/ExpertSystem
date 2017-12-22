@@ -170,7 +170,8 @@ class Expert(Compute, Common):
 
 		if negative == False:
 			if len(index) >= 2:
-				index = index[1:]
+				if index[0] == "!":
+					index = index[1:]
 
 		if index in self._elem:
 			return (self._elem[index])
@@ -183,8 +184,6 @@ class Expert(Compute, Common):
 			self._elem[i].setStatus()
 			self._elem[i].setComputed(False)
 			self._elem[i].setBeginComputed(False)
-			# self.getElement(elem).setBeginComputed()
-
 
 	def setInitialFactToFalse(self):
 		for i in self._facts:

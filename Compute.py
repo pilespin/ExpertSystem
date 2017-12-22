@@ -21,7 +21,7 @@ class Compute(object):
 			if self.getElement("!" + elem).getStatus() == True:
 				self.getElement(elem).setStatus(False)
 		self.getElement(elem).setBeginComputed(False)
-		
+
 			# if ret1 == True and ret2 == True:
 			# 	print "Conflict with element " + elem
 			# 	exit(7)
@@ -42,7 +42,7 @@ class Compute(object):
 				self.computeQueries(self._elem, A.getName())
 			ret = A.getStatus(ret[0])
 		elif len(ret) >= 3:
-			ret = self.parseLongRule(rule) #NOT COMPUTE ELEMENT
+			ret = self.parseLongRule(rule)
 		else:
 			A, operator, B = self.parseSimpleRule(rule)
 			ret = self.compute(A, operator, B)
@@ -56,15 +56,21 @@ class Compute(object):
 			print "Error when parsing: " + rule
 			exit(7)
 
-		ret = self.getElement(elm[0], negative=False).getStatus(elm[0])
+		A = self.getElement(elm[0], negative=False)
+		if (A.getComputed() == False):
+				self.computeQueries(self._elem, A.getName())
 
+		ret = self.getElement(elm[0], negative=False).getStatus(elm[0])
 		for i in range(len(opr)):
 
 			cur = elm[i]
 			nxt = elm[i+1]
 
-			B = self.getElement(nxt, negative=False).getStatus(nxt)
-			ret = self.compute(ret, opr[i], B)
+			B = self.getElement(nxt, negative=False)
+			if (B.getComputed() == False):
+				self.computeQueries(self._elem, B.getName())
+
+			ret = self.compute(ret, opr[i], B.getStatus(nxt))
 		
 		return ret
 

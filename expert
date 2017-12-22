@@ -2,7 +2,6 @@
 
 from Expert import *
 import sys
-# print sys.argv
 
 # DEBUG = True;
 DEBUG = False;
