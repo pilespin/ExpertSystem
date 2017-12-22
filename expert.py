@@ -117,10 +117,11 @@ class Expert(Compute):
 			exit(2)
 	def __addElement(self, name):
 		if (name not in self._elem):
-			if self.__isNegative(name):
-				self._elem[name[1:]] = Element(name[1:])
-			# print "ADD " + name
 			self._elem[name] = Element(name)
+			if self.__isNegative(name):
+				if (name[1:] not in self._elem):
+					self._elem[name[1:]] = Element(name[1:])
+			# print "ADD " + name
 
 	def __isNegative(self, name):
 		if (len(name) >= 2):

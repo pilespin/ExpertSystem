@@ -1,5 +1,6 @@
 
 A ^ B   			=> C 
+
 F ^ !C ^ D ^ I ^ E  => G
 F ^ D ^ C ^ E   	=> H
 F ^ C 	 			=> J
@@ -7,6 +8,6 @@ F ^ C 	 			=> !L
 # A 		 			=> L
 F ^ !C 	 			=> K
 
-=A	E
+=A
 
-?ABCDEFGHIJKL
+?ABC
