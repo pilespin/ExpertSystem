@@ -182,6 +182,9 @@ class Expert(Compute, Common):
 		for i in self._facts:
 			self._elem[i].setStatus()
 			self._elem[i].setComputed(False)
+			self._elem[i].setBeginComputed(False)
+			# self.getElement(elem).setBeginComputed()
+
 
 	def setInitialFactToFalse(self):
 		for i in self._facts:

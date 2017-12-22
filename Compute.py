@@ -9,6 +9,10 @@ class Compute(object):
 		pass
 
 	def computeQueries(self, allElem, elem):
+		if self.getElement(elem).getBeginComputed() == True:
+			print "Loop Detected with: " + elem
+			exit(10)
+		self.getElement(elem).setBeginComputed()
 		rules1 = self.getElement(elem).getRules()
 		self.computeNaturalRule(elem, rules1)
 		if ("!" + elem in allElem):
@@ -16,7 +20,8 @@ class Compute(object):
 			self.computeNaturalRule("!" + elem, rules2)
 			if self.getElement("!" + elem).getStatus() == True:
 				self.getElement(elem).setStatus(False)
-
+		self.getElement(elem).setBeginComputed(False)
+		
 			# if ret1 == True and ret2 == True:
 			# 	print "Conflict with element " + elem
 			# 	exit(7)

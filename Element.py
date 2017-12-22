@@ -10,6 +10,7 @@ class Element(Common):
 		self._name = name
 		self._status = status
 		self._computed = False
+		self._beginComputed = False
 		self._rules = []
 		self._subRules = []
 		self._elem = {}
@@ -91,6 +92,9 @@ class Element(Common):
 	def getComputed(self):
 		return (self._computed)
 
+	def getBeginComputed(self):
+		return (self._beginComputed)
+
 	def getName(self):
 		return (self._name)
 
@@ -122,6 +126,9 @@ class Element(Common):
 
 	def setComputed(self, value=True):
 		self._computed = value
+
+	def setBeginComputed(self, value=True):
+		self._beginComputed = value
 	#############################
 
 	def printInfo(self):
