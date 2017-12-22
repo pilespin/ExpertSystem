@@ -79,6 +79,11 @@ class Expert(Compute, Common):
 				print "Error: " + s
 				exit(1)
 
+			a = re.findall('\||\^', implies)
+			if len(a) >= 1:
+				print "implies not allow \"|\" or \"^\" in: " + s
+				exit(11)
+				
 			for n in self.splitLogicOperator(rule):
 				n = self.removeParentese(n)
 				n = n.strip()
@@ -90,6 +95,24 @@ class Expert(Compute, Common):
 				self.__checkLine(n, rule)
 				self.addElement(n)
 				self.getElement(n).addRule(rule)
+
+			# if iff == True:
+			# 	a = re.findall('\||\^', rule)
+			# 	if len(a) >= 1:
+			# 		print "Biconditional rules not allow \"|\" or \"^\" in: " + s
+			# 		exit(11)
+			# 	else:
+			# 		for n in self.splitLogicOperator(implies):
+			# 			n = self.removeParentese(n)
+			# 			n = n.strip()
+			# 			self.__checkLine(n, implies)
+			# 			self.addElement(n)
+
+			# 		# for n in self.splitLogicOperator(rule):
+			# 			n = rule.strip()
+			# 			self.__checkLine(n, implies)
+			# 			self.addElement(n)
+			# 			self.getElement(n).addRule(implies)
 
 	def checkQueriesExist(self):
 		err = False

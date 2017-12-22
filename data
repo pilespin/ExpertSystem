@@ -1,9 +1,7 @@
 
-HasHair									=> Mammal
-HasClaws + SharpTeeth					=> Carnivore
-EatMeat									=> Carnivore
-Mammal + Carnivore + Spots + VeryFast	=> Cheetah
+A + B									<=> C + D
+# A ^ B									<=> C
 
-=HasHair,HasClaws,SharpTeeth,Spots,VeryFast
+=AB
 
-?Cheetah,Mammal
+?ABC
