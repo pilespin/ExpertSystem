@@ -4,8 +4,8 @@ from Expert import *
 import sys
 # print sys.argv
 
-DEBUG = True;
-# DEBUG = False;
+# DEBUG = True;
+DEBUG = False;
 
 ##############################
 ############ MAIN ############
@@ -33,30 +33,8 @@ e.checkFactsExist()
 
 e.setInitialFact()
 
-# ret = e.compute(False, "+", True)
-# print ret
-
-# ret = e.computeSimpleNaturalRule("D")
-# print ret
-
 if DEBUG == True:
 	e.printAll()
 	e.printElement()
 
 e.showQueries()
-# print e.getElement("!C").getRules()
-
-# e.printElement()
-
-
-# print "--------------------"
-# ret = e.computeQueries('C')
-# # print ret
-# print "--------------------"
-# print "--------------------"
-# ret = e.computeQueries('!C')
-# print ret
-# print "--------------------"
-# print qr + " = " + str(ret)
-
-# e.printElement()

@@ -73,8 +73,6 @@ class Expert(Compute, Common):
 
 			for n in self.splitLogicOperator(rule):
 				n = self.removeParentese(n)
-				# n = re.sub("\)", "", n)
-				# n = re.sub("\(", "", n)
 				n = n.strip()
 				self.__checkLine(n, rule)
 				self.addElement(n)
@@ -101,8 +99,6 @@ class Expert(Compute, Common):
 	def checkFactsExist(self):
 		err = False
 		for q in self._facts:
-			# print "CHECK FACT: " + q
-			# print self._elem
 			if q not in self._elem:
 				print "Fact not reconized: " + q
 				err = True
@@ -127,7 +123,6 @@ class Expert(Compute, Common):
 			if self.__isNegative(name):
 				if (name[1:] not in self._elem):
 					self._elem[name[1:]] = Element(name[1:])
-			print "ADD " + name
 
 	def __isNegative(self, name):
 		if (len(name) >= 2):
@@ -154,12 +149,16 @@ class Expert(Compute, Common):
 		line = line.strip()
 		return (line)
 
-	# def splitLogicOperator(self, string):
-	# 	return (re.split(self.regexOperator, string))
-
 	def getElement(self, index, negative=True):
-		# if self.__isNegative(index):
-		# 	index = index[1:]
+
+		tmp = re.findall('\_(.*)\_', index)
+		if len(tmp) > 0:
+			if tmp[0] in self._elem:
+				A = self._elem[tmp[0]]
+				return(A.getElement(index))
+			else:
+				print "Element Not found1: " + index
+				exit(6)
 
 		if negative == False:
 			if len(index) >= 2:
@@ -168,7 +167,7 @@ class Expert(Compute, Common):
 		if index in self._elem:
 			return (self._elem[index])
 		else:
-			print "Element Not found: " + index
+			print "Element Not found2: " + index
 			exit(6)
 
 	def setInitialFact(self):
@@ -187,7 +186,6 @@ class Expert(Compute, Common):
 				self.setInitialFact()
 				self.computeQueries(self._elem, i)
 				print self._elem[i].getName() + " = " + str(self._elem[i].getStatus())
-				# self.printElement()
 				self.setInitialFactToFalse()
 
 	def printElement(self):

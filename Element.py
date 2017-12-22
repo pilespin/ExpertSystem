@@ -14,24 +14,20 @@ class Element(Common):
 		self._subRules = []
 		self._elem = {}
 
-	# def splitLogicOperator(self, string):
-	# 	return (re.split(self.regexOperator, string))
-
 	def addElement(self, name):
 		if (name not in self._elem):
 			self._elem[name] = Element(name)
 			# if self.__isNegative(name):
 				# if (name[1:] not in self._elem):
 					# self._elem[name[1:]] = Element(name[1:])
-			print "ADD " + name
+			# print "ADD " + name
 
 	def getNewIndex(self):
 		self._index = self._index + 1
-		return ("_" + self.getName() + str(self._index))
+		return ("_" + self.getName() + "_" + str(self._index))
 
 	def getNextIndex(self):
-		# self._index = self._index
-		return ("_" + self.getName() + str(self._index + 1))
+		return ("_" + self.getName() + "_" + str(self._index + 1))
 
 	def getSubParenthesis(self, rule):
 		par = re.findall('\(.*\)', rule)
@@ -48,7 +44,6 @@ class Element(Common):
 				newIndex = self.getNewIndex()
 				if (self._index == 1):
 					tmp = re.sub(re.escape(par), newIndex, rule)
-					print " --- ADD RULE: " + tmp
 					self._rules.append(tmp)
 				
 				elm = self.splitLogicOperator(self.removeParentese(rule))
@@ -79,21 +74,17 @@ class Element(Common):
 	def addRule(self, rule):
 		par = re.findall('\(.*\)', rule)
 		if len(par) > 0:
-			print "ENTER SUB RULE"
 			rule = self.createSubRule(rule)
 			while rule != None:
 				rule = self.createSubRule(rule)
 		else:
-			print "ENTER NORMAL RULE"
 			if (rule not in self._rules):
-				# rule = re.sub('\s+', '', rule)
 				elm = self.splitLogicOperator(rule)
 				if self.getName() not in elm:
 					self._rules.append(rule)
 				else:
 					print "Impliqued element \"" + self.getName() + "\" not have to be in rule: " + rule
 					exit(8)
-				# print "ADDED RULE: " + rule + " IN " + self._name
 
 	########## GETTER ##########
 
@@ -112,8 +103,6 @@ class Element(Common):
 		return (self._rules)
 
 	def getElement(self, index):
-		# print "------------- IN ELEMENT GET " + index + " I'M IN " + self.getName()
-		# print self._elem
 		if index in self._elem:
 			return (self._elem[index])
 		else:
@@ -128,7 +117,6 @@ class Element(Common):
 	def setStatus(self, value=True, string=''):
 		if len(string) > 0 and string[0] == "!":
 			self._status = not value
-			# print "set status" + string + str(self._status)
 		else:
 			self._status = value
 

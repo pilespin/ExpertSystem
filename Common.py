@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import re
-# from Element import Element
 
 class Common(object):
 
@@ -22,7 +21,6 @@ class Common(object):
 
 	def splitLogicOperator(self, string):
 		if self.checkLine(string):
-			# print "SPLIT: " + string
 			return (re.split(self.regexOperator, string))
 		return ([])
 
