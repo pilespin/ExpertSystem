@@ -26,7 +26,15 @@ class Expert(Compute, Common):
 					elif (line[0] == "?"):
 						self.__addQueries(self.__cleanLine(line[1:]))
 					else:
-						self._rules.append(self.__cleanLine(line));
+						self.__addRule(self.__cleanLine(line));
+
+	def __addRule(self, rule):
+		left = re.findall('\(', rule)
+		right = re.findall('\)', rule)
+		if len(left) != len(right):
+			print "Bad parenthesis in rule: " + rule
+			exit(9)
+		self._rules.append(rule);
 
 	def __addFact(self, line):
 		if line.find(',') != -1:
