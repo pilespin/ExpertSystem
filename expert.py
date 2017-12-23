@@ -62,6 +62,8 @@ class Expert(Compute, Common):
 			if (s.find("<=>") != -1):
 				ret = s.split("<=>")
 				iff = True
+				print "Biconditional rules is not handled"
+				exit(12)
 			elif (s.find("=>") != -1):
 				ret = s.split("=>")
 			else:
@@ -83,7 +85,7 @@ class Expert(Compute, Common):
 			if len(a) >= 1:
 				print "implies not allow \"|\" or \"^\" in: " + s
 				exit(11)
-				
+
 			for n in self.splitLogicOperator(rule):
 				n = self.removeParentese(n)
 				n = n.strip()
@@ -97,10 +99,14 @@ class Expert(Compute, Common):
 				self.getElement(n).addRule(rule)
 
 			# if iff == True:
+			# 	if len(self.splitLogicOperator(rule)) >= 2:
+			# 		print "Biconditional rules not allow multiple facts " + s
+			# 		exit(11)
 			# 	a = re.findall('\||\^', rule)
 			# 	if len(a) >= 1:
 			# 		print "Biconditional rules not allow \"|\" or \"^\" in: " + s
 			# 		exit(11)
+
 			# 	else:
 			# 		for n in self.splitLogicOperator(implies):
 			# 			n = self.removeParentese(n)
